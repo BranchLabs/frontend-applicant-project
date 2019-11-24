@@ -77,10 +77,12 @@ function reducer(state, action) {
 			// Sort is required to get the lowest x or y coordinate first
 			let row_range = [coordinates[0], selection_coordinates[0]].sort();
 			let column_range = [coordinates[1], selection_coordinates[1]].sort();
-
-			for (let column = column_range[0]; column <= column_range[1]; column++) {
-				for (let row = row_range[0]; row <= row_range[1]; row++) {
-					set(tableData, `[${column}][${row}]`, '');
+			console.log('row', row_range);
+			console.log('column', column_range);
+			for (let c = column_range[0]; c <= column_range[1]; c++) {
+				for (let r = row_range[0]; r <= row_range[1]; r++) {
+					console.log('tabledata', tableData[c]);
+					tableData[c].splice(0);
 				}
 			}
 

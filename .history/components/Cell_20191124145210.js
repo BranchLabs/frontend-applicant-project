@@ -210,11 +210,11 @@ function Cell({ x, y, readOnly, content }) {
 				onClick={() =>
 					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
 				}
-				onMouseDown={() =>
+				onMouseDown={e =>
 					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
 				}
-				onDoubleClick={() => setEditing(true)}
-				onMouseEnter={() => {
+				onDoubleClick={e => setEditing(true)}
+				onMouseEnter={e => {
 					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });
 				}}
 				ref={ref}
