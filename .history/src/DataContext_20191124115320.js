@@ -110,7 +110,6 @@ function DataProvider({ children, initialData }) {
 	const [state, dispatch] = React.useReducer(
 		reducer,
 		initialData || {
-			mouseDown: false,
 			coordinates: [0, 0],
 			selection_coordinates: [0, 0],
 			size: [4, 3],
@@ -128,6 +127,10 @@ function DataProvider({ children, initialData }) {
 		</DataStateContext.Provider>
 	);
 }
+
+/*
+ * Tests need to be wrapped in DataProviders as well
+ */
 
 function useDataState() {
 	const context = React.useContext(DataStateContext);

@@ -1,7 +1,7 @@
 // src/Data-context.js
 import React from 'react';
 import { Parser } from 'hot-formula-parser';
-import { get, set } from 'lodash';
+import get from 'lodash/get';
 const Excel = new Parser();
 const DataStateContext = React.createContext();
 const DataDispatchContext = React.createContext();
@@ -41,14 +41,11 @@ function reducer(state, action) {
 		}
 
 		case 'SAVE_CELL': {
+			// Save to array
 			let newTable = state.tableData;
 			if (!newTable[y]) newTable[y] = [];
 			newTable[y][x] = value;
 			return { ...state, tableData: newTable };
-		}
-
-		case 'SET_MOUSE_DOWN': {
-			return { ...state, mouseDown: !state.mouseDown };
 		}
 
 		case 'SET_SELECTION': {
@@ -60,15 +57,14 @@ function reducer(state, action) {
 		}
 
 		case 'MASS_DELETE': {
-			let { tableData, coordinates, selection_coordinates } = state;
-			// Prevent unncessary looping by defining clear start and end indexes
-			// Sort is required to get the lowest x or y coordinate first
+			console.log('mass delete');
+			let { coordinates, selection_coordinates } = state;
 			let row_range = [coordinates[0], selection_coordinates[0]].sort();
 			let column_range = [coordinates[1], selection_coordinates[1]].sort();
 
-			for (let c = column_range[0]; c <= column_range[1]; c++) {
-				for (let r = row_range[0]; r <= row_range[1]; r++) {
-					set(tableData, `[${c}][${r}]`, null);
+			for (let r = row_range[0]; r <= row_range[1]; r++) {
+				for (let c = column_range[0]; c <= column_range[1]; c++) {
+					set(tableData, `[${r}][${c}]`, null);
 				}
 			}
 
@@ -110,7 +106,6 @@ function DataProvider({ children, initialData }) {
 	const [state, dispatch] = React.useReducer(
 		reducer,
 		initialData || {
-			mouseDown: false,
 			coordinates: [0, 0],
 			selection_coordinates: [0, 0],
 			size: [4, 3],
@@ -128,6 +123,10 @@ function DataProvider({ children, initialData }) {
 		</DataStateContext.Provider>
 	);
 }
+
+/*
+ * Tests need to be wrapped in DataProviders as well
+ */
 
 function useDataState() {
 	const context = React.useContext(DataStateContext);
@@ -191,6 +190,7 @@ function updateCell(dispatch, table, x, y, value) {
 }
 
 function isInRange(value, range) {
+	console.log(`Is ${value} in range [${range[0]}, ${range[1]}]`);
 	return (value - range[0]) * (value - range[1]) <= 0;
 }
 

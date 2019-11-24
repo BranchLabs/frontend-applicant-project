@@ -129,6 +129,10 @@ function DataProvider({ children, initialData }) {
 	);
 }
 
+/*
+ * Tests need to be wrapped in DataProviders as well
+ */
+
 function useDataState() {
 	const context = React.useContext(DataStateContext);
 	if (context === undefined) {

@@ -7,7 +7,7 @@ export default function Description() {
 				{
 					term: 'App Description',
 					description:
-						'The app takes a json string and populates it into a table. Any string input that starts with an equals sign is considered to be an formula. The cells can be navigated with arrow keys and modified with a double-click or the enter key.',
+						'The app takes a json string and populates it into a table. The cells can be navigated with arrow keys and modified with a double-click or the enter key. Cells support standard excel formulas.',
 				},
 				{
 					term: 'Development Choices',

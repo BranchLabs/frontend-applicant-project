@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDataState, useDataDispatch } from '../src/DataContext';
 import Row from './Row';
@@ -36,6 +36,7 @@ function Table() {
 	let rows = [];
 	let { size, tableData } = useDataState();
 	const tableDispatch = useDataDispatch();
+	const [mouseDown, setMouseDown] = useState(false);
 	const memoizedHeader = useMemo(() => generateHeaderRow(size), [size]);
 
 	for (let y = 0; y < size[1]; y += 1) {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { useDataState, useDataDispatch } from '../src/DataContext';
+import { useDataState } from '../src/DataContext';
 import Row from './Row';
 import { Card } from '@shopify/polaris';
 import get from 'lodash/get';
@@ -35,7 +35,7 @@ function generateHeaderRow(size) {
 function Table() {
 	let rows = [];
 	let { size, tableData } = useDataState();
-	const tableDispatch = useDataDispatch();
+	const [mouseDown, setMouseDown] = useState(false);
 	const memoizedHeader = useMemo(() => generateHeaderRow(size), [size]);
 
 	for (let y = 0; y < size[1]; y += 1) {
@@ -47,16 +47,7 @@ function Table() {
 	return (
 		<Card title={`Table`} sectioned>
 			<DataGrid>
-				<TableBody
-					onMouseDown={e => {
-						tableDispatch({ type: 'SET_MOUSE_DOWN' });
-					}}
-					onMouseUp={e => {
-						tableDispatch({ type: 'SET_MOUSE_DOWN' });
-					}}
-				>
-					{rows}
-				</TableBody>
+				<TableBody>{rows}</TableBody>
 			</DataGrid>
 		</Card>
 	);

@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useDataState, useDataDispatch } from '../src/DataContext';
+import { useDataState } from '../src/DataContext';
 import Row from './Row';
 import { Card } from '@shopify/polaris';
 import get from 'lodash/get';
@@ -35,24 +35,26 @@ function generateHeaderRow(size) {
 function Table() {
 	let rows = [];
 	let { size, tableData } = useDataState();
-	const tableDispatch = useDataDispatch();
+	const [mouseDown, setMouseDown] = useState(false);
 	const memoizedHeader = useMemo(() => generateHeaderRow(size), [size]);
 
 	for (let y = 0; y < size[1]; y += 1) {
 		if (y === 0) rows.push(<Row key={'heading'} readOnly={true} rowContent={memoizedHeader} />);
 		// Individually return groups of <tr> objects
-		rows.push(<Row key={y} y={y} rowContent={get(tableData, y, [])} />);
+		rows.push(<Row key={y} y={y} rowContent={get(tableData, y, [])} mouseDown={mouseDown} />);
 	}
+
+	console.log('mouse down', mouseDown);
 
 	return (
 		<Card title={`Table`} sectioned>
 			<DataGrid>
 				<TableBody
 					onMouseDown={e => {
-						tableDispatch({ type: 'SET_MOUSE_DOWN' });
+						setMouseDown(true);
 					}}
 					onMouseUp={e => {
-						tableDispatch({ type: 'SET_MOUSE_DOWN' });
+						setMouseDown(false);
 					}}
 				>
 					{rows}

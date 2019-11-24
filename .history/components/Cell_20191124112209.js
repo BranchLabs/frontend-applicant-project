@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { useDataState, useDataDispatch, updateCell, isInRange } from '../src/DataContext';
+import { useDataState, useDataDispatch, updateCell } from '../src/DataContext';
 
 const TableData = styled.td`
 	background: #fff;
@@ -86,6 +86,11 @@ const CellInput = styled.input`
 	padding-right: 5px !important;
 `;
 
+function isInRange(value, range) {
+	console.log(`Is ${value} in range [${range[0]}, ${range[1]}]`);
+	return (value - range[0]) * (value - range[1]) <= 0;
+}
+
 function Cell({ x, y, readOnly, content }) {
 	/*
 	 * Ref is a reference to the current element (input/span) rendered
@@ -95,8 +100,9 @@ function Cell({ x, y, readOnly, content }) {
 	const [selected, setSelected] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const [value, setValue] = useState(content);
+	const [hover, setHover] = useState(false);
 	// Get the data context object from index.js and get coordinates
-	const { tableData, mouseDown, coordinates, selection_coordinates } = useDataState();
+	const { tableData, coordinates, selection_coordinates } = useDataState();
 	const tableDispatch = useDataDispatch();
 
 	useEffect(() => {
@@ -134,6 +140,7 @@ function Cell({ x, y, readOnly, content }) {
 	}, [coordinates, selection_coordinates, editing]);
 
 	function handleKeyDown(e) {
+		console.log('e', e.keyCode);
 		// Arrow keys trigger the dispatch to move selection
 		if (e.keyCode > 36 && e.keyCode < 41) {
 			tableDispatch({ type: 'ARROW_KEY_PRESS', code: e.keyCode });
@@ -148,7 +155,7 @@ function Cell({ x, y, readOnly, content }) {
 
 		// Delete
 		if (e.keyCode === 8 && !editing) {
-			tableDispatch({ type: 'MASS_DELETE' });
+			updateCell(tableDispatch, tableData, x, y, '');
 			e.preventDefault();
 		}
 	}
@@ -191,12 +198,14 @@ function Cell({ x, y, readOnly, content }) {
 				tabIndex={x + y * 10}
 				onKeyDown={e => handleKeyDown(e)}
 				onClick={e => tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })}
-				onMouseDown={e => {
-					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] });
-				}}
+				onMouseDown={e => tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })}
 				onDoubleClick={e => setEditing(true)}
-				onMouseEnter={e => {
-					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });
+				onMouseEnter={e => setHover(true)}
+				onMouseLeave={e => {
+					setHover(false);
+				}}
+				onMouseUp={e => {
+					if (hover) tableDispatch({ type: 'SET_SELECTION_END', x, y });
 				}}
 				ref={ref}
 			>

@@ -95,8 +95,10 @@ function Cell({ x, y, readOnly, content }) {
 	const [selected, setSelected] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const [value, setValue] = useState(content);
+	const [hover, setHover] = useState(false);
+	const [mouseDown, setMosueDown] = useState(false);
 	// Get the data context object from index.js and get coordinates
-	const { tableData, mouseDown, coordinates, selection_coordinates } = useDataState();
+	const { tableData, coordinates, selection_coordinates } = useDataState();
 	const tableDispatch = useDataDispatch();
 
 	useEffect(() => {
@@ -192,11 +194,20 @@ function Cell({ x, y, readOnly, content }) {
 				onKeyDown={e => handleKeyDown(e)}
 				onClick={e => tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })}
 				onMouseDown={e => {
+					setMouseDown(true);
 					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] });
 				}}
 				onDoubleClick={e => setEditing(true)}
 				onMouseEnter={e => {
+					setHover(true);
 					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });
+				}}
+				onMouseLeave={e => {
+					setHover(false);
+				}}
+				onMouseUp={e => {
+					setMouseDown(false);
+					if (hover) tableDispatch({ type: 'SET_SELECTION_END', x, y });
 				}}
 				ref={ref}
 			>

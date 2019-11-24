@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { useDataState, useDataDispatch, updateCell, isInRange } from '../src/DataContext';
+import { useDataState, useDataDispatch, updateCell } from '../src/DataContext';
 
 const TableData = styled.td`
 	background: #fff;
@@ -28,6 +28,13 @@ const TableData = styled.td`
 		transition: none;
 		box-shadow: inset 0 -100px 0 rgba(33, 133, 208, 0.25);
 	}
+
+	& span:hover {
+		background-color: #f4f4ff !important;
+		-webkit-transition: all ease 0.2s;
+		transition: all ease 0.2s;
+	}
+
 
 
   ${props =>
@@ -86,6 +93,11 @@ const CellInput = styled.input`
 	padding-right: 5px !important;
 `;
 
+function isInRange(value, range) {
+	console.log(`Is ${value} in range [${range[0]}, ${range[1]}]`);
+	return (value - range[0]) * (value - range[1]) <= 0;
+}
+
 function Cell({ x, y, readOnly, content }) {
 	/*
 	 * Ref is a reference to the current element (input/span) rendered
@@ -95,8 +107,9 @@ function Cell({ x, y, readOnly, content }) {
 	const [selected, setSelected] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const [value, setValue] = useState(content);
+	const [hover, setHover] = useState(false);
 	// Get the data context object from index.js and get coordinates
-	const { tableData, mouseDown, coordinates, selection_coordinates } = useDataState();
+	const { tableData, coordinates, selection_coordinates } = useDataState();
 	const tableDispatch = useDataDispatch();
 
 	useEffect(() => {
@@ -109,13 +122,6 @@ function Cell({ x, y, readOnly, content }) {
 		if (currently_selected) {
 			setSelected(true);
 			ref.current.focus();
-		}
-
-		if (
-			isInRange(x, [coordinates[0], selection_coordinates[0]]) &&
-			isInRange(y, [coordinates[1], selection_coordinates[1]])
-		) {
-			setSelected(true);
 		}
 
 		if (!currently_selected && editing) {
@@ -148,7 +154,7 @@ function Cell({ x, y, readOnly, content }) {
 
 		// Delete
 		if (e.keyCode === 8 && !editing) {
-			tableDispatch({ type: 'MASS_DELETE' });
+			updateCell(tableDispatch, tableData, x, y, '');
 			e.preventDefault();
 		}
 	}
@@ -191,12 +197,14 @@ function Cell({ x, y, readOnly, content }) {
 				tabIndex={x + y * 10}
 				onKeyDown={e => handleKeyDown(e)}
 				onClick={e => tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })}
-				onMouseDown={e => {
-					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] });
-				}}
 				onDoubleClick={e => setEditing(true)}
-				onMouseEnter={e => {
-					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });
+				onMouseEnter={e => setHover(true)}
+				onMouseLeave={e => setHover(false)}
+				onMouseUp={e => {
+					if (hover) {
+						console.log(x, y);
+						tableDispatch({ type: 'SET_SELECTION_END', x, y });
+					}
 				}}
 				ref={ref}
 			>

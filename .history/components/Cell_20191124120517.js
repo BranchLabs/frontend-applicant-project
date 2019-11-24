@@ -95,10 +95,12 @@ function Cell({ x, y, readOnly, content }) {
 	const [selected, setSelected] = useState(false);
 	const [editing, setEditing] = useState(false);
 	const [value, setValue] = useState(content);
+	const [hover, setHover] = useState(false);
 	// Get the data context object from index.js and get coordinates
 	const { tableData, mouseDown, coordinates, selection_coordinates } = useDataState();
 	const tableDispatch = useDataDispatch();
 
+	console.log('mousedown', mouseDown);
 	useEffect(() => {
 		/*
 		 * If this new cell isEqual to the selected coordinates -> select it
@@ -196,7 +198,11 @@ function Cell({ x, y, readOnly, content }) {
 				}}
 				onDoubleClick={e => setEditing(true)}
 				onMouseEnter={e => {
-					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });
+					tableDispatch({ type: 'SET_SELECTION_END', x, y });
+				}}
+				onMouseLeave={e => {}}
+				onMouseUp={e => {
+					if (hover) tableDispatch({ type: 'SET_SELECTION_END', x, y });
 				}}
 				ref={ref}
 			>

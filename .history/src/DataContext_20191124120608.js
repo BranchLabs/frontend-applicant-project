@@ -48,7 +48,7 @@ function reducer(state, action) {
 		}
 
 		case 'SET_MOUSE_DOWN': {
-			return { ...state, mouseDown: !state.mouseDown };
+			return { ...state, mouseDown: true };
 		}
 
 		case 'SET_SELECTION': {
@@ -128,6 +128,10 @@ function DataProvider({ children, initialData }) {
 		</DataStateContext.Provider>
 	);
 }
+
+/*
+ * Tests need to be wrapped in DataProviders as well
+ */
 
 function useDataState() {
 	const context = React.useContext(DataStateContext);
