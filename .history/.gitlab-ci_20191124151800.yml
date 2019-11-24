@@ -1,0 +1,10 @@
+image: node:latest
+
+# This folder is cached between builds
+cache:
+  paths:
+    - node_modules/
+
+test_build:
+  script:
+    - npm run build
