@@ -205,7 +205,7 @@ function Cell({ x, y, readOnly, content }) {
 	return (
 		<TableData selected={selected}>
 			<CellContent
-				tabIndex={x + y * 10 + 1}
+				tabIndex={x + y * 10}
 				onKeyDown={e => handleKeyDown(e)}
 				onClick={e =>
 					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
