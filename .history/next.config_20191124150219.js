@@ -5,11 +5,11 @@ module.exports = withCSS({
 		// Fixes npm packages that depend on `fs` module
 		config.node = {
 			fs: 'empty',
+			devIndicators: {
+				autoPrerender: false,
+			},
 		};
 
 		return config;
-	},
-	devIndicators: {
-		autoPrerender: false,
 	},
 });

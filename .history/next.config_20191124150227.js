@@ -9,7 +9,4 @@ module.exports = withCSS({
 
 		return config;
 	},
-	devIndicators: {
-		autoPrerender: false,
-	},
 });
