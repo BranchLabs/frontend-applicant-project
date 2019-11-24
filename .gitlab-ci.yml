@@ -3,9 +3,8 @@ image: node:latest
 stages:
   - setup
   - test
-  - deploy
   
- setup:
+setup:
   stage: setup
   script: npm install
   
