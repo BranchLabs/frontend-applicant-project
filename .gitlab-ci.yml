@@ -1,7 +1,15 @@
 image: node:latest
 
-
-test_build:
-  script:
-    - npm run build
-
+stages:
+  - setup
+  - test
+  - deploy
+  
+ setup:
+  stage: setup
+  script: npm install
+  
+test:
+  stage: test
+  script: npm test
+  
