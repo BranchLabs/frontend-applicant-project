@@ -19,10 +19,6 @@ function getTableDimensions(data) {
 		height = data.length;
 	}
 
-	// Developer personal user interface preference
-	width = width < 4 ? 4 : width;
-	height = height < 4 ? 4 : height;
-
 	return [width, height];
 }
 
@@ -54,7 +50,7 @@ function reducer(state, action) {
 				tableData: normalizedData,
 				size,
 				coordinates: [0, 0],
-				selection_coordinates: [0, 0],
+				set_coordinates: [0, 0],
 			};
 		}
 
@@ -135,10 +131,10 @@ function DataProvider({ children, initialData }) {
 			mouseDown: false,
 			coordinates: [0, 0],
 			selection_coordinates: [0, 0],
-			size: [4, 4],
+			size: [4, 3],
 			tableData: [
-				['Kiril', '-> -> ->', '@BranchLabs'],
-				[1, 2, 25],
+				['Kiril', 'wants', 'to work', '@BranchLabs'],
+				[1, 2, 3, 100],
 				['', '=SUM(A2:D3)', '=SUM(A2, A2)'],
 			],
 		},

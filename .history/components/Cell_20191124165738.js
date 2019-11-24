@@ -51,7 +51,6 @@ const TableData = styled.td`
 			text-align: center;
 			font-weight: bold;
 			color: grey;
-			width: 50px !important;
 		`}
 
 	${props =>

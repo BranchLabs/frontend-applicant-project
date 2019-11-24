@@ -15,18 +15,9 @@ function Row({ y, rowContent, readOnly }) {
 
 	for (let x = 0; x < size[0]; x += 1) {
 		// Readonly flags that the cell should not listen to any event handlers
-		if (x === 0)
-			columns.push(<Cell key={-1} content={y > -1 ? y + 1 : ''} readOnly />);
+		if (x === 0) columns.push(<Cell key={-1} content={y > -1 ? y + 1 : ''} readOnly />);
 		// Relying on lodash/get to safely show an empty value for undefined array elements
-		columns.push(
-			<Cell
-				key={x}
-				x={x}
-				y={y}
-				readOnly={readOnly || false}
-				content={get(rowContent, x, '')}
-			/>,
-		);
+		columns.push(<Cell key={x} x={x} y={y} readOnly={readOnly || false} content={get(rowContent, x, '')} />);
 	}
 
 	return <TableRow>{columns}</TableRow>;

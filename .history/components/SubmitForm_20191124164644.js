@@ -15,8 +15,8 @@ import {
 function hasJsonStructure(jsonString) {
 	try {
 		let o = JSON.parse(jsonString);
-		// Empty array is also 'not' a valid json object in this context
-		if (o && typeof o === 'object' && o.length > 0) {
+		if (o && typeof o === 'object') {
+			console.log('object', o.length);
 			return o;
 		}
 	} catch (e) {}
@@ -91,10 +91,7 @@ function AppForm() {
 						onChange={handleDataChange}
 						label='Data key'
 						helpText={
-							<span>
-								Per instructions, this form only supports json. Any formulas
-								will be parsed on load.
-							</span>
+							<span>Per instructions, this form only supports json.</span>
 						}
 					/>
 					{toast.error && toast.inlineError ? (

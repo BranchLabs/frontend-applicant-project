@@ -23,9 +23,9 @@ const TableData = styled.td`
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
-	width: 120px;
-	min-width: 120px!important;
-	max-width: 120px!important;
+	width: 100px;
+	min-width: 100px!important;
+	max-width: 100px!important;
 	white-space: nowrap;
 
 	& span:focus {

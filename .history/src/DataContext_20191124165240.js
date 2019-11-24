@@ -20,8 +20,8 @@ function getTableDimensions(data) {
 	}
 
 	// Developer personal user interface preference
-	width = width < 4 ? 4 : width;
-	height = height < 4 ? 4 : height;
+	width = width < 5 ? 5 : width;
+	height = height < 5 ? 5 : height;
 
 	return [width, height];
 }
@@ -135,10 +135,10 @@ function DataProvider({ children, initialData }) {
 			mouseDown: false,
 			coordinates: [0, 0],
 			selection_coordinates: [0, 0],
-			size: [4, 4],
+			size: [5, 5],
 			tableData: [
-				['Kiril', '-> -> ->', '@BranchLabs'],
-				[1, 2, 25],
+				['Kiril', 'wants', 'to', 'work', '@BranchLabs'],
+				[1, 2, 3, 100],
 				['', '=SUM(A2:D3)', '=SUM(A2, A2)'],
 			],
 		},

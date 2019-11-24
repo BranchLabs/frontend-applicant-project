@@ -23,9 +23,9 @@ const TableData = styled.td`
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
-	width: 120px;
-	min-width: 120px!important;
-	max-width: 120px!important;
+	width: 150px;
+	min-width: 150px;
+	max-width: 150px!important;
 	white-space: nowrap;
 
 	& span:focus {
@@ -51,7 +51,6 @@ const TableData = styled.td`
 			text-align: center;
 			font-weight: bold;
 			color: grey;
-			width: 50px !important;
 		`}
 
 	${props =>

@@ -20,8 +20,8 @@ function getTableDimensions(data) {
 	}
 
 	// Developer personal user interface preference
-	width = width < 4 ? 4 : width;
-	height = height < 4 ? 4 : height;
+	width = width < 4 ? 5 : width;
+	height = height < 4 ? 5 : height;
 
 	return [width, height];
 }
