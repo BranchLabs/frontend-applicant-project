@@ -1,6 +1,6 @@
 import React from 'react';
 import App from 'next/app';
-import { DataProvider } from '../src/DataContext';
+import Nav from '../components/nav';
 import enTranslations from '@shopify/polaris/locales/en.json';
 import { AppProvider, Frame } from '@shopify/polaris';
 import '@shopify/polaris/styles.css';
@@ -16,9 +16,7 @@ class MyApp extends App {
 		return (
 			<AppProvider i18n={enTranslations}>
 				<Frame>
-					<DataProvider>
-						<Component {...pageProps} />
-					</DataProvider>
+					<Component {...pageProps} />
 				</Frame>
 				<style global jsx>{`
 					.Polaris-Card {

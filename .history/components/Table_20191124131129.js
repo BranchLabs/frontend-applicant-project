@@ -6,11 +6,11 @@ import { Card } from '@shopify/polaris';
 import get from 'lodash/get';
 
 const DataGrid = styled.table`
+	display: block;
 	border-collapse: collapse;
 	table-layout: fixed;
 	overflow-x: auto;
 	width: 100%;
-	display: block;
 `;
 
 const TableBody = styled.tbody`

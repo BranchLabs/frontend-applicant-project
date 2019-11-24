@@ -10,7 +10,6 @@ const DataGrid = styled.table`
 	table-layout: fixed;
 	overflow-x: auto;
 	width: 100%;
-	display: block;
 `;
 
 const TableBody = styled.tbody`

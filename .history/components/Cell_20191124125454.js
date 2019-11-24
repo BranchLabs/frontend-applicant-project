@@ -18,13 +18,14 @@ const TableData = styled.td`
 	-ms-user-select: none;
 	cursor: cell;
 	background-color: unset;
-	-webkit-transition: background-color 0.1s ease;
-	transition: background-color 0.1s ease;
+	-webkit-transition: background-color 0.5s ease;
+	transition: background-color 0.5s ease;
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
 	min-width: 100px;
 	max-width: 200px;
+	transition: all ease 0.5s;
 
 	& span:focus {
 		backgrond-color: red;
@@ -38,8 +39,8 @@ const TableData = styled.td`
 		props.selected &&
 		css`
 			background-color: #f4f4ff !important;
-			-webkit-transition: all ease 0s;
-			transition: all ease 0s;
+			-webkit-transition: all ease 0.2s;
+			transition: all ease 0.2s;
 		`}
 
 	${props =>
@@ -210,9 +211,9 @@ function Cell({ x, y, readOnly, content }) {
 				onClick={e =>
 					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
 				}
-				onMouseDown={e =>
-					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
-				}
+				onMouseDown={e => {
+					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] });
+				}}
 				onDoubleClick={e => setEditing(true)}
 				onMouseEnter={e => {
 					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });

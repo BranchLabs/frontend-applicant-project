@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import {
-	useDataState,
-	useDataDispatch,
-	updateCell,
-	isInRange,
-} from '../src/DataContext';
+import { useDataState, useDataDispatch, updateCell, isInRange } from '../src/DataContext';
 
 const TableData = styled.td`
 	background: #fff;
@@ -18,13 +13,14 @@ const TableData = styled.td`
 	-ms-user-select: none;
 	cursor: cell;
 	background-color: unset;
-	-webkit-transition: background-color 0.1s ease;
-	transition: background-color 0.1s ease;
+	-webkit-transition: background-color 0.5s ease;
+	transition: background-color 0.5s ease;
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
 	min-width: 100px;
 	max-width: 200px;
+	transition: all ease 0.5s;
 
 	& span:focus {
 		backgrond-color: red;
@@ -38,8 +34,8 @@ const TableData = styled.td`
 		props.selected &&
 		css`
 			background-color: #f4f4ff !important;
-			-webkit-transition: all ease 0s;
-			transition: all ease 0s;
+			-webkit-transition: all ease 0.2s;
+			transition: all ease 0.2s;
 		`}
 
 	${props =>
@@ -100,29 +96,20 @@ function Cell({ x, y, readOnly, content }) {
 	const [editing, setEditing] = useState(false);
 	const [value, setValue] = useState(content);
 	// Get the data context object from index.js and get coordinates
-	const {
-		tableData,
-		mouseDown,
-		coordinates,
-		selection_coordinates,
-	} = useDataState();
+	const { tableData, mouseDown, coordinates, selection_coordinates } = useDataState();
 	const tableDispatch = useDataDispatch();
 
 	useEffect(() => {
 		/*
-		 * If this new cell isEqual to the selected coordinates -> focus on it
+		 * If this new cell isEqual to the selected coordinates -> select it
 		 * If it's no longer selected and still an input state -> save cell
 		 */
 		const currently_selected = coordinates[0] === x && coordinates[1] === y;
 
 		if (currently_selected) {
+			setSelected(true);
 			ref.current.focus();
 		}
-
-		/*
-		 * This function supports multi-cell selection
-		 * If the cell is within the range of the selected cell and mutli-selection -> focus it.
-		 */
 
 		if (
 			isInRange(x, [coordinates[0], selection_coordinates[0]]) &&
@@ -131,18 +118,14 @@ function Cell({ x, y, readOnly, content }) {
 			setSelected(true);
 		}
 
-		/*
-		 * Prevent cells from being editable if not in focus
-		 */
-
 		if (!currently_selected && editing) {
 			setEditing(false);
 			updateCell(tableDispatch, tableData, x, y, value);
 		}
 
 		/*
-		 * Cleanup the effect by removing the selection
-		 * if new coordinates are provided
+		 * Any changes to the selected coordinates
+		 * assume this cell is no longer in focus
 		 */
 
 		return function cleanup() {
@@ -157,13 +140,13 @@ function Cell({ x, y, readOnly, content }) {
 			e.preventDefault();
 		}
 		// Enter key toggles the editable status of the cell
-		// It's imporant to save the cell data before removing the input
+		// It's imporant to save the cell data before toggling
 		if (e.keyCode === 13) {
 			if (editing) updateCell(tableDispatch, tableData, x, y, e.target.value);
 			setEditing(!editing);
 		}
 
-		// Delete individual cell or multi-selection
+		// Delete
 		if (e.keyCode === 8 && !editing) {
 			tableDispatch({ type: 'MASS_DELETE' });
 			e.preventDefault();
@@ -207,12 +190,10 @@ function Cell({ x, y, readOnly, content }) {
 			<CellContent
 				tabIndex={x + y * 10}
 				onKeyDown={e => handleKeyDown(e)}
-				onClick={e =>
-					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
-				}
-				onMouseDown={e =>
-					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })
-				}
+				onClick={e => tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] })}
+				onMouseDown={e => {
+					tableDispatch({ type: 'SET_SELECTION', coordinates: [x, y] });
+				}}
 				onDoubleClick={e => setEditing(true)}
 				onMouseEnter={e => {
 					if (mouseDown) tableDispatch({ type: 'SET_SELECTION_END', x, y });

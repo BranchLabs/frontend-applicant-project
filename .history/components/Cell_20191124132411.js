@@ -18,8 +18,8 @@ const TableData = styled.td`
 	-ms-user-select: none;
 	cursor: cell;
 	background-color: unset;
-	-webkit-transition: background-color 0.1s ease;
-	transition: background-color 0.1s ease;
+	-webkit-transition: background-color 0.5s ease;
+	transition: background-color 0.5s ease;
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;

@@ -1,16 +1,7 @@
 import { useState, useCallback, useReducer } from 'react';
 import { useDataDispatch, useDataState } from '../src/DataContext';
 import Save from 'file-saver';
-import {
-	Stack,
-	Card,
-	Form,
-	FormLayout,
-	TextField,
-	InlineError,
-	Button,
-	Toast,
-} from '@shopify/polaris';
+import { Stack, Card, Form, FormLayout, TextField, InlineError, Button, Toast } from '@shopify/polaris';
 
 function hasJsonStructure(jsonString) {
 	try {
@@ -34,13 +25,7 @@ function reducer(state, action) {
 				inlineError: 'The data was not valid JSON',
 			};
 		case 'ACCEPT':
-			return {
-				...state,
-				active: true,
-				message: 'Data loaded',
-				error: false,
-				inlineError: false,
-			};
+			return { ...state, active: true, message: 'Data loaded', error: false, inlineError: false };
 		case 'CLEANUP':
 			return { ...state, active: false, error: false };
 		default:
@@ -50,17 +35,13 @@ function reducer(state, action) {
 
 function AppForm() {
 	const { tableData } = useDataState();
-	console.log('tabledata', tableData);
 	const tableDispatch = useDataDispatch();
 	// JSON data input initialized in the data context
 	const [data, setData] = useState(JSON.stringify(tableData));
 	const handleDataChange = useCallback(value => setData(value), []);
 	// Toast dispatcher
 	// TODO: Reducer seems overkill, but easily extendible
-	const [toast, dispatch] = useReducer(reducer, {
-		active: false,
-		error: false,
-	});
+	const [toast, dispatch] = useReducer(reducer, { active: false, error: false });
 
 	const handleSubmit = useCallback(() => {
 		// Prevent form from accepting non-json data types
@@ -75,7 +56,9 @@ function AppForm() {
 	const toastMarkup = toast.active ? (
 		<Toast
 			content={toast.message}
-			onDismiss={() => dispatch({ type: 'CLEANUP' })}
+			onDismiss={() => {
+				dispatch({ type: 'CLEANUP' });
+			}}
 			error={toast.error}
 		/>
 	) : null;
@@ -90,13 +73,9 @@ function AppForm() {
 						value={data}
 						onChange={handleDataChange}
 						label='Data key'
-						helpText={
-							<span>Per instructions, this form only supports json.</span>
-						}
+						helpText={<span>Per instructions, this form only supports json.</span>}
 					/>
-					{toast.error && toast.inlineError ? (
-						<InlineError message={toast.inlineError} fieldID='myFieldID' />
-					) : null}
+					{toast.error && toast.inlineError ? <InlineError message={toast.inlineError} fieldID='myFieldID' /> : null}
 
 					<Stack distribution='leading' alignment='center'>
 						<Button submit primary>
@@ -105,9 +84,7 @@ function AppForm() {
 						<Button
 							plain
 							onClick={() => {
-								var blob = new Blob([JSON.stringify(tableData)], {
-									type: 'text/plain;charset=utf-8',
-								});
+								var blob = new Blob([tableData], { type: 'text/plain;charset=utf-8' });
 								Save.saveAs(blob, 'spreadsheet.txt');
 							}}
 						>

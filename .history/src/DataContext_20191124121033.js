@@ -9,17 +9,11 @@ const DataDispatchContext = React.createContext();
 // Loop through rows and find the longest 2D array element
 function getTableDimensions(data) {
 	let width = 0;
-	let height = 0;
+	data.forEach(element => {
+		if (element.length > width) width = element.length;
+	});
 
-	if (Array.isArray(data)) {
-		data.forEach(element => {
-			if (element.length > width) width = element.length;
-		});
-
-		height = data.length;
-	}
-
-	return [width, height];
+	return [width, data.length];
 }
 
 /*
@@ -35,12 +29,10 @@ function reducer(state, action) {
 			// Input data is valid JSON here
 			tableData = JSON.parse(tableData);
 			let size = getTableDimensions(tableData);
-			// Loop though array object and convert formulas to values
 			// TODO: Let user decide if the input JSON should instantly be normalized
 			let normalizedData = tableData.map(function(tableRow) {
 				return tableRow.map(value => {
-					let normalizedValue =
-						value.length > 0 ? parseFomula(tableData, value) : value;
+					let normalizedValue = value.length > 0 ? parseFomula(tableData, value) : value;
 					return normalizedValue;
 				});
 			});
@@ -60,11 +52,7 @@ function reducer(state, action) {
 		}
 
 		case 'SET_SELECTION': {
-			return {
-				...state,
-				coordinates: action.coordinates,
-				selection_coordinates: action.coordinates,
-			};
+			return { ...state, coordinates: action.coordinates, selection_coordinates: action.coordinates };
 		}
 
 		case 'SET_SELECTION_END': {
@@ -102,7 +90,7 @@ function reducer(state, action) {
 				++y; // Down arrow press
 			}
 
-			return { ...state, coordinates: [x, y], selection_coordinates: [x, y] };
+			return { ...state, coordinates: [x, y] };
 		}
 
 		default: {
@@ -131,14 +119,12 @@ function DataProvider({ children, initialData }) {
 				[1, 2, 3, 100],
 				['React Hooks', '=SUM(A2:D3)', '=SUM(A2, A2)'],
 			],
-		},
+		}
 	);
 
 	return (
 		<DataStateContext.Provider value={state}>
-			<DataDispatchContext.Provider value={dispatch}>
-				{children}
-			</DataDispatchContext.Provider>
+			<DataDispatchContext.Provider value={dispatch}>{children}</DataDispatchContext.Provider>
 		</DataStateContext.Provider>
 	);
 }
@@ -160,7 +146,8 @@ function useDataDispatch() {
 }
 
 /*
- * Unless the value starts with an equals sign, return cell value
+ * This function should be rate-limited in calls
+ * Unless the value starts with an equals sign, ignore it
  */
 
 function parseFomula(table, value) {
@@ -180,11 +167,7 @@ function parseFomula(table, value) {
 			let collection = [];
 			// Iterate over rows first
 			for (let r = startCellCoord.row.index; r <= endCellCoord.row.index; r++) {
-				for (
-					let c = startCellCoord.column.index;
-					c <= endCellCoord.column.index;
-					c++
-				) {
+				for (let c = startCellCoord.column.index; c <= endCellCoord.column.index; c++) {
 					let contents = get(table, `[${r}][${c}]`, null);
 					collection.push(contents);
 				}
@@ -211,11 +194,4 @@ function isInRange(value, range) {
 	return (value - range[0]) * (value - range[1]) <= 0;
 }
 
-export {
-	DataProvider,
-	DataStateContext,
-	useDataState,
-	useDataDispatch,
-	updateCell,
-	isInRange,
-};
+export { DataProvider, DataStateContext, useDataState, useDataDispatch, updateCell, isInRange };

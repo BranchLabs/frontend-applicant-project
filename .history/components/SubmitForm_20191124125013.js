@@ -50,7 +50,6 @@ function reducer(state, action) {
 
 function AppForm() {
 	const { tableData } = useDataState();
-	console.log('tabledata', tableData);
 	const tableDispatch = useDataDispatch();
 	// JSON data input initialized in the data context
 	const [data, setData] = useState(JSON.stringify(tableData));
@@ -105,7 +104,7 @@ function AppForm() {
 						<Button
 							plain
 							onClick={() => {
-								var blob = new Blob([JSON.stringify(tableData)], {
+								var blob = new Blob([tableData], {
 									type: 'text/plain;charset=utf-8',
 								});
 								Save.saveAs(blob, 'spreadsheet.txt');

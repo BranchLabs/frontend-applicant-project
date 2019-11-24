@@ -6,11 +6,7 @@ import { Page } from '@shopify/polaris';
 
 function Home() {
 	return (
-		<Page
-			title='Spreadsheet App'
-			subtitle="For a demo, select C3 and press 'Enter' twice or load data."
-			narrowWidth
-		>
+		<Page title='Spreadsheet App' subtitle="For a demo, select C3 and press 'Enter' twice or load data." narrowWidth>
 			<Table />
 			<AppForm />
 			<Descriptiom />

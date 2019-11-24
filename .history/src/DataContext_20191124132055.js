@@ -9,17 +9,11 @@ const DataDispatchContext = React.createContext();
 // Loop through rows and find the longest 2D array element
 function getTableDimensions(data) {
 	let width = 0;
-	let height = 0;
+	data.forEach(element => {
+		if (element.length > width) width = element.length;
+	});
 
-	if (Array.isArray(data)) {
-		data.forEach(element => {
-			if (element.length > width) width = element.length;
-		});
-
-		height = data.length;
-	}
-
-	return [width, height];
+	return [width, data ? data.length : 0];
 }
 
 /*
@@ -102,7 +96,7 @@ function reducer(state, action) {
 				++y; // Down arrow press
 			}
 
-			return { ...state, coordinates: [x, y], selection_coordinates: [x, y] };
+			return { ...state, coordinates: [x, y] };
 		}
 
 		default: {

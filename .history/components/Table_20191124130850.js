@@ -6,11 +6,11 @@ import { Card } from '@shopify/polaris';
 import get from 'lodash/get';
 
 const DataGrid = styled.table`
+	display: block;
 	border-collapse: collapse;
 	table-layout: fixed;
 	overflow-x: auto;
 	width: 100%;
-	display: block;
 `;
 
 const TableBody = styled.tbody`
@@ -23,13 +23,10 @@ function generateHeaderRow(size) {
 	 * Alphabet characters is represented by 32
 	 * Starting char is 65 which displays "A"
 	 */
-	let headerRow = new Array(size[0] + 1).fill().map((_, index) => {
-		console.log(size[1]);
+	let headerRow = new Array(size[1] + 1).fill().map((_, index) => {
 		let char = index % 32; // prevents showing non-alphabet characters
 		let loop = Math.floor(index / 32) + 1; // Doubles up on values after first loop
-		let character = String.fromCharCode(65 + char).repeat(loop);
-		console.log(`Character ${character} from ${char}`);
-		return character;
+		return String.fromCharCode(65 + char).repeat(loop);
 	});
 
 	return headerRow;

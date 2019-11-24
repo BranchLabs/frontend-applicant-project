@@ -102,7 +102,7 @@ function reducer(state, action) {
 				++y; // Down arrow press
 			}
 
-			return { ...state, coordinates: [x, y], selection_coordinates: [x, y] };
+			return { ...state, coordinates: [x, y] };
 		}
 
 		default: {

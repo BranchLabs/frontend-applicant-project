@@ -12,7 +12,7 @@ export default function Description() {
 				{
 					term: 'Development Choices',
 					description:
-						'The app uses two React Context objects to make the table state and a useReducer available to all nested components within the app. A component like <Table> can access state variables (like grid size) which is set by a <Form> components. This allows developers to easily extend the app by adding a new dispatch action.',
+						'The app uses two React Context objects to make the table state and a useReducer available to all nested components within the app. A component like <Table> can easily access state variables like grid size which is set by the <Form>. This allows developers to easily add new features by extending the reducer and pulling in new data for components that need them.',
 				},
 				{
 					term: 'Dependancies',

@@ -9,17 +9,11 @@ const DataDispatchContext = React.createContext();
 // Loop through rows and find the longest 2D array element
 function getTableDimensions(data) {
 	let width = 0;
-	let height = 0;
+	data.forEach(element => {
+		if (element.length > width) width = element.length;
+	});
 
-	if (Array.isArray(data)) {
-		data.forEach(element => {
-			if (element.length > width) width = element.length;
-		});
-
-		height = data.length;
-	}
-
-	return [width, height];
+	return [width, data.length];
 }
 
 /*
@@ -50,8 +44,7 @@ function reducer(state, action) {
 
 		case 'SAVE_CELL': {
 			let newTable = state.tableData;
-			if (!newTable[y]) newTable[y] = [];
-			newTable[y][x] = value;
+			set(newTable, [y][x], value);
 			return { ...state, tableData: newTable };
 		}
 
@@ -102,7 +95,7 @@ function reducer(state, action) {
 				++y; // Down arrow press
 			}
 
-			return { ...state, coordinates: [x, y], selection_coordinates: [x, y] };
+			return { ...state, coordinates: [x, y] };
 		}
 
 		default: {
@@ -160,7 +153,8 @@ function useDataDispatch() {
 }
 
 /*
- * Unless the value starts with an equals sign, return cell value
+ * This function should be rate-limited in calls
+ * Unless the value starts with an equals sign, ignore it
  */
 
 function parseFomula(table, value) {

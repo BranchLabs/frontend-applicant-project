@@ -10,7 +10,6 @@ const DataDispatchContext = React.createContext();
 function getTableDimensions(data) {
 	let width = 0;
 	let height = 0;
-
 	if (Array.isArray(data)) {
 		data.forEach(element => {
 			if (element.length > width) width = element.length;
@@ -19,7 +18,7 @@ function getTableDimensions(data) {
 		height = data.length;
 	}
 
-	return [width, height];
+	return [width, data ? data.length : 0];
 }
 
 /*
@@ -102,7 +101,7 @@ function reducer(state, action) {
 				++y; // Down arrow press
 			}
 
-			return { ...state, coordinates: [x, y], selection_coordinates: [x, y] };
+			return { ...state, coordinates: [x, y] };
 		}
 
 		default: {

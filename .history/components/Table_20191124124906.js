@@ -10,7 +10,6 @@ const DataGrid = styled.table`
 	table-layout: fixed;
 	overflow-x: auto;
 	width: 100%;
-	display: block;
 `;
 
 const TableBody = styled.tbody`
@@ -23,13 +22,10 @@ function generateHeaderRow(size) {
 	 * Alphabet characters is represented by 32
 	 * Starting char is 65 which displays "A"
 	 */
-	let headerRow = new Array(size[0] + 1).fill().map((_, index) => {
-		console.log(size[1]);
+	let headerRow = new Array(size[1] + 1).fill().map((_, index) => {
 		let char = index % 32; // prevents showing non-alphabet characters
 		let loop = Math.floor(index / 32) + 1; // Doubles up on values after first loop
-		let character = String.fromCharCode(65 + char).repeat(loop);
-		console.log(`Character ${character} from ${char}`);
-		return character;
+		return String.fromCharCode(65 + char).repeat(loop);
 	});
 
 	return headerRow;
@@ -43,10 +39,7 @@ function Table() {
 
 	for (let y = 0; y < size[1]; y += 1) {
 		// Push a header row before anything is added to the array. Pattern A, B, C ... AA, BB, CC
-		if (y === 0)
-			rows.push(
-				<Row key={'heading'} readOnly={true} rowContent={memoizedHeader} />,
-			);
+		if (y === 0) rows.push(<Row key={'heading'} readOnly={true} rowContent={memoizedHeader} />);
 		// Individually return groups of <tr> objects
 		rows.push(<Row key={y} y={y} rowContent={get(tableData, y, [])} />);
 	}
@@ -55,7 +48,9 @@ function Table() {
 		<Card title={`Table`} sectioned>
 			<DataGrid>
 				<TableBody
-					onMouseDown={e => tableDispatch({ type: 'SET_MOUSE_DOWN' })}
+					onMouseDown={e => {
+						tableDispatch({ type: 'SET_MOUSE_DOWN' });
+					}}
 					onMouseUp={e => tableDispatch({ type: 'SET_MOUSE_DOWN' })}
 				>
 					{rows}

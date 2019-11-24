@@ -50,7 +50,7 @@ function reducer(state, action) {
 
 function AppForm() {
 	const { tableData } = useDataState();
-	console.log('tabledata', tableData);
+	console.log('tabledata', table);
 	const tableDispatch = useDataDispatch();
 	// JSON data input initialized in the data context
 	const [data, setData] = useState(JSON.stringify(tableData));
