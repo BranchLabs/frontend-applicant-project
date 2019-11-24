@@ -55,7 +55,7 @@ function AppForm() {
 	const [data, setData] = useState(JSON.stringify(tableData));
 	const handleDataChange = useCallback(value => setData(value), [data]);
 	// Toast dispatcher
-	// TODO: Reducer seems overkill, but easily extendible
+	// TODO: Reducer seems overkill, but easily extendibles
 	const [toast, dispatch] = useReducer(reducer, {
 		active: false,
 		error: false,

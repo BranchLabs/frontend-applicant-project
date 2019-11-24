@@ -80,7 +80,7 @@ function reducer(state, action) {
 
 			for (let c = column_range[0]; c <= column_range[1]; c++) {
 				for (let r = row_range[0]; r <= row_range[1]; r++) {
-					tableData[c].splice(r);
+					tableData[c].splice(r); //
 				}
 			}
 

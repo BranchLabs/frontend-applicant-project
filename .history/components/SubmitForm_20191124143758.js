@@ -53,7 +53,7 @@ function AppForm() {
 	const tableDispatch = useDataDispatch();
 	// JSON data input initialized in the data context
 	const [data, setData] = useState(JSON.stringify(tableData));
-	const handleDataChange = useCallback(value => setData(value), [data]);
+	const handleDataChange = useCallback(value => setData(value), [value]);
 	// Toast dispatcher
 	// TODO: Reducer seems overkill, but easily extendible
 	const [toast, dispatch] = useReducer(reducer, {
