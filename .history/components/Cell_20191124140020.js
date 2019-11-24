@@ -23,8 +23,7 @@ const TableData = styled.td`
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
-	width: 110px;
-	max-width: 110px;
+	width: 100px;
 
 	& span:focus {
 		backgrond-color: red;
@@ -80,7 +79,7 @@ const CellInput = styled.input`
 	display: block;
 	margin: 0;
 	height: 30px;
-	width: 100%;
+	width: 100px;
 	height: 100%;
 	border: 0px;
 	text-align: right;

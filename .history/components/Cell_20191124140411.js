@@ -23,8 +23,7 @@ const TableData = styled.td`
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
-	width: 110px;
-	max-width: 110px;
+	width: 100px;
 
 	& span:focus {
 		backgrond-color: red;

@@ -24,7 +24,6 @@ const TableData = styled.td`
 	text-align: right;
 	border: 1px solid #ddd;
 	width: 110px;
-	max-width: 110px;
 
 	& span:focus {
 		backgrond-color: red;

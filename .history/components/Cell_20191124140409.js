@@ -23,8 +23,7 @@ const TableData = styled.td`
 	vertical-align: middle;
 	text-align: right;
 	border: 1px solid #ddd;
-	width: 110px;
-	max-width: 110px;
+	width: 100px;
 
 	& span:focus {
 		backgrond-color: red;
@@ -86,8 +85,7 @@ const CellInput = styled.input`
 	text-align: right;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	padding-right: 5px !important;
+	-webkit-box-sizing: border-box;\
 `;
 
 function Cell({ x, y, readOnly, content }) {
