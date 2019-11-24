@@ -9,7 +9,7 @@ stages:
   - test
 
 setup:
-  stage: install
+  stage: setup
   script: npm install
 
 test:
