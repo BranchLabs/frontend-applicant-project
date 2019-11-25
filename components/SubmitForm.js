@@ -2,7 +2,7 @@ import { useState, useCallback, useReducer } from 'react';
 import {
 	useDataDispatch,
 	useDataState,
-	hasJsonStructure,
+	isInputValid,
 } from '../src/DataContext';
 import {
 	Stack,
@@ -23,7 +23,8 @@ function reducer(state, action) {
 				active: true,
 				message: 'Not valid json',
 				error: true,
-				inlineError: 'The data was not valid JSON',
+				inlineError:
+					'The data is not valid! Your input should be a JSON string that contains arrays.',
 			};
 		case 'ACCEPT':
 			return {
@@ -55,8 +56,7 @@ function AppForm() {
 
 	const handleSubmit = useCallback(() => {
 		// Prevent form from accepting non-json data types
-		const dataStructure = hasJsonStructure(data);
-		if (!dataStructure) dispatch({ type: 'ERROR' });
+		if (!isInputValid(data)) dispatch({ type: 'ERROR' });
 		else {
 			dispatch({ type: 'ACCEPT' });
 			tableDispatch({ type: 'LOAD_DATA', tableData: data });

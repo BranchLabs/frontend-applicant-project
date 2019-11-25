@@ -39,7 +39,7 @@ function reducer(state, action) {
 		case 'LOAD_DATA': {
 			// At this point JSON is valid, but re-check
 			// in necessary to attach testing functions
-			if (hasJsonStructure(tableData)) {
+			if (isInputValid(tableData)) {
 				tableData = JSON.parse(tableData);
 				let size = getTableDimensions(tableData);
 				// Loop though array object and convert formulas to values
@@ -235,11 +235,22 @@ function isInRange(value, range) {
 	return (value - range[0]) * (value - range[1]) <= 0;
 }
 
-function hasJsonStructure(jsonString) {
+function isInputValid(jsonString) {
 	try {
 		let o = JSON.parse(jsonString);
-		// Empty array is also 'not' a valid json object in this context
-		if (o && typeof o === 'object' && o.length > 0) {
+		/*
+		 * Inputs follow these requirements.
+		 * -> The input must exist
+		 * -> The input must be an object
+		 * -> The parsed json can not be empty
+		 * -> All values in object must be array
+		 */
+		if (
+			o &&
+			typeof o === 'object' &&
+			o.length > 0 &&
+			o.every(element => Array.isArray(element))
+		) {
 			return o;
 		}
 	} catch (e) {}
@@ -254,5 +265,5 @@ export {
 	useDataDispatch,
 	updateCell,
 	isInRange,
-	hasJsonStructure,
+	isInputValid,
 };
