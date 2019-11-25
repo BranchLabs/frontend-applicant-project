@@ -7,26 +7,6 @@ import Save from 'file-saver';
 const DataStateContext = React.createContext();
 const DataDispatchContext = React.createContext();
 
-// Loop through rows and find the longest 2D array element
-function getTableDimensions(data) {
-	let width = 0;
-	let height = 0;
-
-	if (Array.isArray(data)) {
-		data.forEach(element => {
-			if (element.length > width) width = element.length;
-		});
-
-		height = data.length;
-	}
-
-	// Developer personal user interface preference
-	width = width < 4 ? 4 : width;
-	height = height < 4 ? 4 : height;
-
-	return [width, height];
-}
-
 /*
  * Reducer handles cell navigation and updates
  * It does not mix the toast dispatchers
@@ -235,16 +215,17 @@ function isInRange(value, range) {
 	return (value - range[0]) * (value - range[1]) <= 0;
 }
 
+/*
+ * Inputs follow these requirements.
+ * -> The input must exist
+ * -> The input must be an object
+ * -> The parsed json can not be empty
+ * -> All values in object must be array
+ */
+
 function isInputValid(jsonString) {
 	try {
 		let o = JSON.parse(jsonString);
-		/*
-		 * Inputs follow these requirements.
-		 * -> The input must exist
-		 * -> The input must be an object
-		 * -> The parsed json can not be empty
-		 * -> All values in object must be array
-		 */
 		if (
 			o &&
 			typeof o === 'object' &&
@@ -256,6 +237,26 @@ function isInputValid(jsonString) {
 	} catch (e) {}
 
 	return false;
+}
+
+// Loop through rows and find the longest 2D array element
+function getTableDimensions(data) {
+	let width = 0;
+	let height = 0;
+
+	if (Array.isArray(data)) {
+		data.forEach(element => {
+			if (element.length > width) width = element.length;
+		});
+
+		height = data.length;
+	}
+
+	// Developer personal user interface preference
+	width = width < 4 ? 4 : width;
+	height = height < 4 ? 4 : height;
+
+	return [width, height];
 }
 
 export {
