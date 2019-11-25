@@ -1,6 +1,9 @@
 import { useState, useCallback, useReducer } from 'react';
-import { useDataDispatch, useDataState } from '../src/DataContext';
-import Save from 'file-saver';
+import {
+	useDataDispatch,
+	useDataState,
+	hasJsonStructure,
+} from '../src/DataContext';
 import {
 	Stack,
 	Card,
@@ -11,18 +14,6 @@ import {
 	Button,
 	Toast,
 } from '@shopify/polaris';
-
-function hasJsonStructure(jsonString) {
-	try {
-		let o = JSON.parse(jsonString);
-		// Empty array is also 'not' a valid json object in this context
-		if (o && typeof o === 'object' && o.length > 0) {
-			return o;
-		}
-	} catch (e) {}
-
-	return false;
-}
 
 function reducer(state, action) {
 	switch (action.type) {
@@ -108,10 +99,7 @@ function AppForm() {
 						<Button
 							plain
 							onClick={() => {
-								var blob = new Blob([JSON.stringify(tableData)], {
-									type: 'text/plain;charset=utf-8',
-								});
-								Save.saveAs(blob, 'spreadsheet.txt');
+								tableDispatch({ type: 'SAVE_DATA' });
 							}}
 						>
 							Save

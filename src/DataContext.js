@@ -3,6 +3,7 @@ import React from 'react';
 import { Parser } from 'hot-formula-parser';
 import { get, set } from 'lodash';
 const Excel = new Parser();
+import Save from 'file-saver';
 const DataStateContext = React.createContext();
 const DataDispatchContext = React.createContext();
 
@@ -36,26 +37,39 @@ function reducer(state, action) {
 	let { type, x, y, value, tableData, code } = action;
 	switch (type) {
 		case 'LOAD_DATA': {
-			// Input data is valid JSON here
-			tableData = JSON.parse(tableData);
-			let size = getTableDimensions(tableData);
-			// Loop though array object and convert formulas to values
-			// TODO: Let user decide if the input JSON should instantly be normalized
-			let normalizedData = tableData.map(function(tableRow) {
-				return tableRow.map(value => {
-					let normalizedValue =
-						value.length > 0 ? parseFomula(tableData, value) : value;
-					return normalizedValue;
+			// At this point JSON is valid, but re-check
+			// in necessary to attach testing functions
+			if (hasJsonStructure(tableData)) {
+				tableData = JSON.parse(tableData);
+				let size = getTableDimensions(tableData);
+				// Loop though array object and convert formulas to values
+				// TODO: Let user decide if the input JSON should instantly be normalized
+				let normalizedData = tableData.map(function(tableRow) {
+					return tableRow.map(value => {
+						let normalizedValue =
+							value.length > 0 ? parseFomula(tableData, value) : value;
+						return normalizedValue;
+					});
 				});
-			});
 
-			return {
-				...state,
-				tableData: normalizedData,
-				size,
-				coordinates: [0, 0],
-				selection_coordinates: [0, 0],
-			};
+				return {
+					...state,
+					tableData: normalizedData,
+					size,
+					coordinates: [0, 0],
+					selection_coordinates: [0, 0],
+				};
+			} else {
+				return { ...state };
+			}
+		}
+
+		case 'SAVE_DATA': {
+			var blob = new Blob([JSON.stringify(state.tableData)], {
+				type: 'text/plain;charset=utf-8',
+			});
+			Save.saveAs(blob, 'spreadsheet.txt');
+			return { ...state };
 		}
 
 		case 'SAVE_CELL': {
@@ -221,6 +235,18 @@ function isInRange(value, range) {
 	return (value - range[0]) * (value - range[1]) <= 0;
 }
 
+function hasJsonStructure(jsonString) {
+	try {
+		let o = JSON.parse(jsonString);
+		// Empty array is also 'not' a valid json object in this context
+		if (o && typeof o === 'object' && o.length > 0) {
+			return o;
+		}
+	} catch (e) {}
+
+	return false;
+}
+
 export {
 	DataProvider,
 	DataStateContext,
@@ -228,4 +254,5 @@ export {
 	useDataDispatch,
 	updateCell,
 	isInRange,
+	hasJsonStructure,
 };
