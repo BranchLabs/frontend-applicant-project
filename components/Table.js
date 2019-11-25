@@ -56,6 +56,7 @@ function Table() {
 				<TableBody
 					onMouseDown={e => tableDispatch({ type: 'SET_MOUSE_DOWN' })}
 					onMouseUp={e => tableDispatch({ type: 'SET_MOUSE_DOWN' })}
+					onMouseLeave={e => tableDispatch({ type: 'RESET_SELECTION' })}
 				>
 					{rows}
 				</TableBody>

@@ -63,6 +63,14 @@ function reducer(state, action) {
 			return { ...state, mouseDown: !state.mouseDown };
 		}
 
+		case 'RESET_SELECTION': {
+			return {
+				...state,
+				mouseDown: false,
+				selection_coordinates: state.coordinates,
+			};
+		}
+
 		case 'SET_SELECTION': {
 			return {
 				...state,
