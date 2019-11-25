@@ -1,0 +1,10 @@
+image: node:latest
+
+stages:
+   - production
+
+production:
+   type: deploy
+   stage: production
+    script: 
+      - npm run build
